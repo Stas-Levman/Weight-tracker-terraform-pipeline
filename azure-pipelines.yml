@@ -1,7 +1,21 @@
 
+resources:
+  repositories: 
+  - repository: Weight-tracker-terraform-pipeline
+    type: github
+    name: sincros121/Weight-tracker-terraform-pipeline
+    endpoint: sincros121
+    ref: main
+    trigger:
+      branches:
+        include:
+        - main
+      paths:
+        exclude:
+          - azure-pipelines.yml
+          - templates/*
+          - templates
 
-trigger:
-- master
 
 pool: 'self-hosted-stas'
 
