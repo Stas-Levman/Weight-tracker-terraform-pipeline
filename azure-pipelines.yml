@@ -29,6 +29,9 @@ stages:
       displayName: Initialize terraform
 
       steps:
+      - checkout: self
+        displayName: Clone latest terraform repo
+
       - script: |
           terraform init
         displayName: Initialize terraform
@@ -62,10 +65,7 @@ stages:
     strategy:
       runOnce:
         deploy:
-          steps:
-          - checkout: self
-            displayName: Clone latest terraform repo
-            
+          steps:            
           - task: DownloadSecureFile@1
             name: prod_tfvars
             displayName: 'Download prod tfvars file'
@@ -98,9 +98,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - checkout: self
-            displayName: Clone latest terraform repo
-
           - task: DownloadSecureFile@1
             name: prod_tfvars
             displayName: 'Download prod tfvars file'
