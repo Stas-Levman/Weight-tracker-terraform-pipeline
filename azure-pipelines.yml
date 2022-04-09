@@ -39,6 +39,7 @@ stages:
 
     - job: Workspaces
       displayName: Ensure workspaces exist
+      dependsOn: Initialize_terraform
 
       steps:
       - script: |
