@@ -1,0 +1,18 @@
+
+
+# trigger:
+# - main
+
+pool: 'self-hosted-stas'
+
+stages:
+- stage: Stage
+  displayName: 
+  
+  jobs:
+  - job: Build
+    displayName: Build artifacts
+
+    steps:
+    - checkout: self
+      displayName: Clone latest web-application repo
