@@ -12,7 +12,6 @@ stages:
   variables: 
   - group: vault secrets - stage
 
-
   jobs:
   - deployment: Deploy
     environment: stage
@@ -53,7 +52,6 @@ stages:
 
   variables: 
   - group: vault secrets - prod
-
 
   jobs:
   - deployment: Deploy
