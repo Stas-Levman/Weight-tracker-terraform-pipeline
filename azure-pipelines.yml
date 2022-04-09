@@ -50,12 +50,14 @@ stages:
         displayName: Ensure workspace stage exist
         workingDirectory: root_module
         continueOnError: true
+        failOnStderr: false
 
       - script: |
           terraform workspace new prod
         displayName: Ensure workspace prod exist
         workingDirectory: root_module
         continueOnError: true
+        failOnStderr: false
 
 
 
