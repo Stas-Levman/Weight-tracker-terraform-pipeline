@@ -6,13 +6,68 @@
 pool: 'self-hosted-stas'
 
 stages:
-- stage: Stage
-  displayName: 
-  
-  jobs:
-  - job: Build
-    displayName: Build artifacts
+- stage: Stage_infrastructure
+  displayName: Stage infrastructure deploy
 
-    steps:
-    - checkout: self
-      displayName: Clone latest web-application repo
+  variables: 
+  - group: vault secrets - stage
+
+
+  jobs:
+  - deployment: Deploy
+    environment: stage
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+            displayName: Clone latest terraform repo
+            
+          - script: |
+              terraform init
+            displayName: Initialzie terraform
+
+          - script: |
+              terraform workspace select $(Environment.Name)
+            displayName: Select workspace
+
+          - script: |
+              terraform apply -var-file "$(terraform workspace show).tfvars"
+ 
+
+
+- stage: Prod_infrastructure
+  displayName: Prod infrastructure deploy
+
+  variables: 
+  - group: vault secrets - prod
+
+
+  jobs:
+  - deployment: Deploy
+    environment: prod
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+            displayName: Clone latest terraform repo
+
+          - task: DownloadSecureFile@1
+            name: caCertificate
+            displayName: 'Download CA certificate'
+            inputs:
+              secureFile: 'myCACertificate.pem'
+              
+            
+          - script: |
+              terraform init
+            displayName: Initialzie terraform
+
+          - script: |
+              terraform workspace select $(Environment.Name)
+            displayName: Select workspace
+
+          - script: |
+              terraform apply -var-file "$(terraform workspace show).tfvars"
+
