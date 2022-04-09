@@ -90,6 +90,14 @@ stages:
               terraform apply -var-file "$(stage_tfvars.secureFilePath)"
             displayName: Deploy infrastructure using .tfvars file
             workingDirectory: root_module
+
+  - job: Update_okta
+    displayName: Update Okta URLs via API
+    
+    steps:
+    - checkout: none
+
+    - template: templates/Okta-API-call-stage.yaml
  
 
 
@@ -127,3 +135,10 @@ stages:
             displayName: Deploy infrastructure using .tfvars file
             workingDirectory: root_module
 
+  - job: Update_okta
+    displayName: Update Okta URLs via API
+    
+    steps:
+    - checkout: none
+
+    - template: templates/Okta-API-call-prod.yaml
