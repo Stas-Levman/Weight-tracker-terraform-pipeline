@@ -90,6 +90,10 @@ stages:
           #     terraform apply -var-file "$(stage_tfvars.secureFilePath)" -auto-approve
           #   displayName: Deploy infrastructure using .tfvars file
           #   workingDirectory: root_module
+          
+          - checkout: self
+            clean: false
+            displayName: Clone latest terraform repo
 
           - template: templates/Okta-API-call-stage.yaml
             
