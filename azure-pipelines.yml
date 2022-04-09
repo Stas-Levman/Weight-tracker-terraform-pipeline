@@ -46,18 +46,14 @@ stages:
       - checkout: none
 
       - script: |
-          terraform workspace new stage
+          terraform workspace select stage || terraform workspace new stage
         displayName: Ensure workspace stage exist
         workingDirectory: root_module
-        continueOnError: true
-        failOnStderr: false
 
       - script: |
-          terraform workspace new prod
+          terraform workspace select prod || terraform workspace new prod
         displayName: Ensure workspace prod exist
         workingDirectory: root_module
-        continueOnError: true
-        failOnStderr: false
 
 
 
@@ -67,9 +63,8 @@ stages:
   variables: 
   - group: vault secrets - stage
   - name: ip_address
-    value: $(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress")
+    value: echo "$(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress")"
 
-  
 
   jobs:
   - deployment: Deploy
@@ -78,28 +73,21 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: DownloadSecureFile@1
-            name: stage_tfvars
-            displayName: 'Download stage tfvars file'
-            inputs:
-              secureFile: 'stage.tfvars'    
+          # - task: DownloadSecureFile@1
+          #   name: stage_tfvars
+          #   displayName: 'Download stage tfvars file'
+          #   inputs:
+          #     secureFile: 'stage.tfvars'    
 
-          - script: |
-              terraform workspace select $(Environment.Name)
-            displayName: Select workspace
-            workingDirectory: root_module
+          # - script: |
+          #     terraform workspace select $(Environment.Name)
+          #   displayName: Select workspace
+          #   workingDirectory: root_module
 
-          - script: |
-              terraform apply -var-file "$(stage_tfvars.secureFilePath)" -auto-approve
-            displayName: Deploy infrastructure using .tfvars file
-            workingDirectory: root_module
-          
-          - checkout: self
-            clean: false
-            displayName: Clone latest terraform repo
-
-          - script: |
-              echo $(ip_address)
+          # - script: |
+          #     terraform apply -var-file "$(stage_tfvars.secureFilePath)" -auto-approve
+          #   displayName: Deploy infrastructure using .tfvars file
+          #   workingDirectory: root_module
 
           - template: templates/Okta-API-call-stage.yaml
             
@@ -112,7 +100,7 @@ stages:
   variables: 
   - group: vault secrets - prod
   - name: ip_address
-    value: $(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress")
+    value: echo "$(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress")"
 
   jobs:
   - deployment: Deploy
