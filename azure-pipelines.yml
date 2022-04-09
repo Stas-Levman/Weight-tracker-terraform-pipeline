@@ -5,7 +5,28 @@
 
 pool: 'self-hosted-stas'
 
+
 stages:
+- stage: Prepare terraform
+  displayName: Prepare terraform
+
+  jobs:
+    - job: Workspaces
+      displayName: Ensure workspaces exist
+
+      steps:
+      - script: |
+          terraform workspace new stage
+        displayName: Initialzie terraform
+        workingDirectory: root_module  
+
+      - script: |
+          terraform workspace new prod
+        displayName: Initialzie terraform
+        workingDirectory: root_module  
+
+
+
 - stage: Stage_infrastructure
   displayName: Stage infrastructure deploy
 
@@ -67,8 +88,7 @@ stages:
             name: prod_tfvars
             displayName: 'Download prod tfvars file'
             inputs:
-              secureFile: 'prod.tfvars'
-              
+              secureFile: 'prod.tfvars'    
             
           - script: |
               terraform init
