@@ -7,3 +7,7 @@ output "VM-password" {
   value     = module.web-application-vmss.VM-password
   sensitive = true
 }
+
+output "psql" {
+  value = module.weight-tracker-postgresql-db.psql-fqdn
+}
