@@ -1,4 +1,4 @@
-
+#
 locals {
   #Default resource location that will be used for the resource group and all the resources in it.
   def-location = azurerm_resource_group.resource-group.location
