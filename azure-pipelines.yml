@@ -7,7 +7,7 @@ pool: 'self-hosted-stas'
 
 
 stages:
-- stage: Prepare terraform
+- stage: Prepare_terraform
   displayName: Prepare terraform
 
   jobs:
