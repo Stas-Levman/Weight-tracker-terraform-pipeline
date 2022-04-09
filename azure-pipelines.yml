@@ -7,6 +7,7 @@ resources:
     endpoint: sincros121
     ref: main
     trigger:
+      batch: true
       branches:
         include:
         - main
@@ -79,11 +80,6 @@ stages:
             displayName: 'Download stage tfvars file'
             inputs:
               secureFile: 'stage.tfvars'    
-            
-          # - script: |
-          #     terraform init
-          #   displayName: Initialzie terraform
-          #   workingDirectory: root_module
 
           - script: |
               terraform workspace select $(Environment.Name)
@@ -91,7 +87,7 @@ stages:
             workingDirectory: root_module
 
           - script: |
-              terraform apply -var-file "$(stage_tfvars.secureFilePath)"
+              terraform apply -var-file "$(stage_tfvars.secureFilePath)" -auto-approve
             displayName: Deploy infrastructure using .tfvars file
             workingDirectory: root_module
 
@@ -118,11 +114,6 @@ stages:
             displayName: 'Download prod tfvars file'
             inputs:
               secureFile: 'prod.tfvars'    
-            
-          # - script: |
-          #     terraform init
-          #   displayName: Initialzie terraform
-          #   workingDirectory: root_module
 
           - script: |
               terraform workspace select $(Environment.Name)
@@ -130,7 +121,7 @@ stages:
             workingDirectory: root_module
 
           - script: |
-              terraform apply -var-file "$(prod_tfvars.secureFilePath)"
+              terraform apply -var-file "$(prod_tfvars.secureFilePath)" -auto-approve
             displayName: Deploy infrastructure using .tfvars file
             workingDirectory: root_module
 
