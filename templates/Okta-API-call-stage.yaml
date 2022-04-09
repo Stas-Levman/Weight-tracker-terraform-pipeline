@@ -1,6 +1,6 @@
 steps:
 - script: |
-    ip_address=$(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress" | echo)
+    ip_address=$(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress")
     curl -v -X PUT \
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
