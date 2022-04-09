@@ -79,11 +79,6 @@ stages:
             displayName: 'Download stage tfvars file'
             inputs:
               secureFile: 'stage.tfvars'    
-            
-          # - script: |
-          #     terraform init
-          #   displayName: Initialzie terraform
-          #   workingDirectory: root_module
 
           - script: |
               terraform workspace select $(Environment.Name)
@@ -118,11 +113,6 @@ stages:
             displayName: 'Download prod tfvars file'
             inputs:
               secureFile: 'prod.tfvars'    
-            
-          # - script: |
-          #     terraform init
-          #   displayName: Initialzie terraform
-          #   workingDirectory: root_module
 
           - script: |
               terraform workspace select $(Environment.Name)
