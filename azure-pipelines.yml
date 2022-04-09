@@ -37,11 +37,11 @@ stages:
         displayName: Initialize terraform
         workingDirectory: root_module
 
-    - job: Workspaces
-      displayName: Ensure workspaces exist
-      dependsOn: Initialize_terraform
+    # - job: Workspaces
+    #   displayName: Ensure workspaces exist
+    #   dependsOn: Initialize_terraform
 
-      steps:
+      # steps:
       - script: |
           terraform workspace new stage
         displayName: Ensure workspace stage exist
