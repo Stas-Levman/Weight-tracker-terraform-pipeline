@@ -31,7 +31,7 @@ stages:
       steps:
       - script: |
           terraform init
-        displayName: Initialzie terraform
+        displayName: Initialize terraform
         workingDirectory: root_module
 
     - job: Workspaces
@@ -41,12 +41,12 @@ stages:
       - script: |
           terraform workspace new stage
         displayName: Ensure workspace stage exist
-        workingDirectory: root_module  
+        workingDirectory: root_module
 
       - script: |
           terraform workspace new prod
         displayName: Ensure workspace prod exist
-        workingDirectory: root_module  
+        workingDirectory: root_module
 
 
 
