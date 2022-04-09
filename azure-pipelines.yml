@@ -67,14 +67,14 @@ stages:
 
   jobs:
   - deployment: Deploy
-    environment: prod
+    environment: stage
     strategy:
       runOnce:
         deploy:
           steps:
           - task: DownloadSecureFile@1
             name: stage_tfvars
-            displayName: 'Download prod tfvars file'
+            displayName: 'Download stage tfvars file'
             inputs:
               secureFile: 'stage.tfvars'    
             
