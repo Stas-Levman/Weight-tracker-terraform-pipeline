@@ -46,17 +46,17 @@ stages:
       - checkout: none
 
       - script: |
-          terraform workspace new stage
+          terraform workspace select stage || terraform workspace new stage
         displayName: Ensure workspace stage exist
         workingDirectory: root_module
-        # continueOnError: true
+        continueOnError: true
         failOnStderr: false
 
       - script: |
-          terraform workspace new prod
+          terraform workspace select prod || terraform workspace new prod
         displayName: Ensure workspace prod exist
         workingDirectory: root_module
-        # continueOnError: true
+        continueOnError: true
         failOnStderr: false
 
 
