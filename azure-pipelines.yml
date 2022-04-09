@@ -17,12 +17,12 @@ stages:
       steps:
       - script: |
           terraform workspace new stage
-        displayName: Initialzie terraform
+        displayName: Ensure workspace stage exist
         workingDirectory: root_module  
 
       - script: |
           terraform workspace new prod
-        displayName: Initialzie terraform
+        displayName: Ensure workspace prod exist
         workingDirectory: root_module  
 
 
