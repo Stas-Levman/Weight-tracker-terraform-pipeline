@@ -100,7 +100,7 @@ stages:
             displayName: Clone latest terraform repo
 
           - script: |
-              echo $ip_address
+              echo $(ip_address)
 
           # - template: templates/Okta-API-call-stage.yaml
             
