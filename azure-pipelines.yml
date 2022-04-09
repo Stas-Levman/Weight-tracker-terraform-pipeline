@@ -1,7 +1,7 @@
 
 
-# trigger:
-# - main
+trigger:
+- master
 
 pool: 'self-hosted-stas'
 
