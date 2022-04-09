@@ -63,7 +63,7 @@ stages:
   variables: 
   - group: vault secrets - stage
   - name: ip_address
-    value: echo $(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress")
+    value: echo "$(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress")"
 
 
   jobs:
@@ -100,7 +100,7 @@ stages:
   variables: 
   - group: vault secrets - prod
   - name: ip_address
-    value: echo $(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress")
+    value: echo "$(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress")"
 
   jobs:
   - deployment: Deploy
