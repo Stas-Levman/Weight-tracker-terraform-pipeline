@@ -67,6 +67,10 @@ stages:
 
   variables: 
   - group: vault secrets - stage
+  - name: ip_address
+    value: $(az network public-ip show -g weight-tracker-$(Environment.Name)-rg -n front-public-ip --query "ipAddress")
+
+  
 
   jobs:
   - deployment: Deploy
@@ -95,7 +99,10 @@ stages:
             clean: false
             displayName: Clone latest terraform repo
 
-          - template: templates/Okta-API-call-stage.yaml
+          - script: |
+              echo $ip_address
+
+          # - template: templates/Okta-API-call-stage.yaml
             
  
 
