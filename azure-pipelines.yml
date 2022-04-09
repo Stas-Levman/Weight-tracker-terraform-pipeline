@@ -73,21 +73,21 @@ stages:
       runOnce:
         deploy:
           steps:
-          # - task: DownloadSecureFile@1
-          #   name: stage_tfvars
-          #   displayName: 'Download stage tfvars file'
-          #   inputs:
-          #     secureFile: 'stage.tfvars'    
+          - task: DownloadSecureFile@1
+            name: stage_tfvars
+            displayName: 'Download stage tfvars file'
+            inputs:
+              secureFile: 'stage.tfvars'    
 
-          # - script: |
-          #     terraform workspace select $(Environment.Name)
-          #   displayName: Select workspace
-          #   workingDirectory: root_module
+          - script: |
+              terraform workspace select $(Environment.Name)
+            displayName: Select workspace
+            workingDirectory: root_module
 
-          # - script: |
-          #     terraform apply -var-file "$(stage_tfvars.secureFilePath)" -auto-approve
-          #   displayName: Deploy infrastructure using .tfvars file
-          #   workingDirectory: root_module
+          - script: |
+              terraform apply -var-file "$(stage_tfvars.secureFilePath)" -auto-approve
+            displayName: Deploy infrastructure using .tfvars file
+            workingDirectory: root_module
 
           - template: templates/Okta-API-call-stage.yaml
             
