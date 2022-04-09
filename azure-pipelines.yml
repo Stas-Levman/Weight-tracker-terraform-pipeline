@@ -38,11 +38,13 @@ stages:
         displayName: Initialize terraform
         workingDirectory: root_module
 
-    # - job: Workspaces
-    #   displayName: Ensure workspaces exist
-    #   dependsOn: Initialize_terraform
+    - job: Workspaces
+      displayName: Ensure workspaces exist
+      dependsOn: Initialize_terraform
 
-      # steps:
+      steps:
+      - checkout: none
+
       - script: |
           terraform workspace new stage
         displayName: Ensure workspace stage exist
@@ -63,25 +65,29 @@ stages:
 
   jobs:
   - deployment: Deploy
-    environment: stage
+    environment: prod
     strategy:
       runOnce:
         deploy:
-          steps:            
+          steps:
           - task: DownloadSecureFile@1
-            name: prod_tfvars
+            name: stage_tfvars
             displayName: 'Download prod tfvars file'
             inputs:
-              secureFile: 'prod.tfvars'
+              secureFile: 'stage.tfvars'    
             
+          # - script: |
+          #     terraform init
+          #   displayName: Initialzie terraform
+          #   workingDirectory: root_module
+
           - script: |
               terraform workspace select $(Environment.Name)
             displayName: Select workspace
             workingDirectory: root_module
-            
 
           - script: |
-              terraform apply -var-file "$(prod_tfvars.secureFilePath)"
+              terraform apply -var-file "$(stage_tfvars.secureFilePath)"
             displayName: Deploy infrastructure using .tfvars file
             workingDirectory: root_module
  
@@ -106,10 +112,10 @@ stages:
             inputs:
               secureFile: 'prod.tfvars'    
             
-          - script: |
-              terraform init
-            displayName: Initialzie terraform
-            workingDirectory: root_module
+          # - script: |
+          #     terraform init
+          #   displayName: Initialzie terraform
+          #   workingDirectory: root_module
 
           - script: |
               terraform workspace select $(Environment.Name)
