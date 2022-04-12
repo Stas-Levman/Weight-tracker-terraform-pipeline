@@ -83,3 +83,9 @@ variable "postgresql-db-password" {
   type        = string
   description = "Variable of sensitive data that will be used with a custom .tfvars file instead of relying on vault"
 }
+
+variable "sku" {
+  default = "Standard_B1s"
+  type = string
+  description = "SKU for the VMSS"
+}

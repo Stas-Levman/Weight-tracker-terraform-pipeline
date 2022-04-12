@@ -44,3 +44,7 @@ variable "vmss-maximum-instances" {
   description = "The maximum amount of virtual machines to scale yo to"
 }
 
+variable "sku" {
+  type = string
+  description = "SKU for the VMSS"
+}

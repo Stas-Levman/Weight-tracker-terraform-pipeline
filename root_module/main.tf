@@ -87,46 +87,6 @@ resource "azurerm_public_ip" "load-balancer-public-ip" {
 }
 
 
-#---------------------------------------------------------------------------------------------------------
-# This resource inputs the sensitive data we fetched either from azure vault or from the .tfvars file into
-# the custom data shell script that will be used to configure the virtual machines in the scale set,
-# create the .env file, and update the URIs in okta via API.
-#---------------------------------------------------------------------------------------------------------
-#data "template_file" "env-creation-shell-script" {
-#  template = file("${path.module}/templates/env-creation.txt")
-#
-#  vars = {
-#    PGHOST             = module.weight-tracker-postgresql-db.psql-fqdn
-#    PGPASSWORD         = var.is-azure-vault-enabled ? module.azure-vault[0].weight-tracker-PSQL-password : var.PGPASSWORD
-#    HOST_URL_IP        = local.lb-public-ip-address
-#    COOKIE_ENCRYPT_PWD = var.is-azure-vault-enabled ? module.azure-vault[0].cookie-encrypt-pwd : var.COOKIE_ENCRYPT_PWD
-#    OKTA-client-ID     = var.OKTA-client-ID
-#    OKTA_CLIENT_SECRET = var.is-azure-vault-enabled ? module.azure-vault[0].okta-client-secret : var.OKTA_CLIENT_SECRET
-#  }
-#}
-#
-#data "template_file" "api-call-shell-script" {
-#  template = file("${path.module}/templates/Okta-API-call.txt")
-#
-#  vars = {
-#    okta-API-token     = var.is-azure-vault-enabled ? module.azure-vault[0].okta-API-token : var.okta-API-token
-#    HOST_URL_IP        = local.lb-public-ip-address
-#    OKTA-client-ID     = var.OKTA-client-ID
-#    OKTA-client-name   = var.OKTA-client-name
-#  }
-#}
-#
-#resource "local_file" "create-API-call-script" {
-#  filename = "../../ansible/roles/web-application-setup/files/OKTA-API-call-${terraform.workspace}.sh"
-#  content  = data.template_file.api-call-shell-script.rendered
-#}
-#
-#resource "local_file" "create-ENV-creation-script" {
-#  filename = "../../ansible/roles/web-application-setup/files/ENV-creation-${terraform.workspace}.sh"
-#  content  = data.template_file.env-creation-shell-script.rendered
-#}
-
-
 #--------------------------------------------------------------------------------------------------------------
 # Creates the public load balancer that will be used to access the application on the virtual machine scale set,
 # SSH access to the virtual machines is given via inbound NAT configuration
@@ -160,6 +120,7 @@ module "web-application-vmss" {
   public-subnet-id         = module.subnets.public-subnet-id
   #  VM-custom-data           = base64encode(data.template_file.custom-data-shell-script.rendered)
   vmss-maximum-instances = var.vmss-maximum-instances
+  sku                    = var.sku
 
   depends_on = [module.front-load-balancer, module.weight-tracker-postgresql-db]
 }
